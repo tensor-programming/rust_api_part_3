@@ -1,4 +1,5 @@
-#![feature(plugin, custom_derive, const_fn, decl_macro)]
+#![feature(plugin, custom_derive, const_fn, decl_macro, attr_literals, custom_attribute)]
+//new attributes added with attr_literals and custom_attribute
 #![plugin(rocket_codegen)]
 
 #[macro_use]
@@ -38,7 +39,8 @@ fn rocket() -> rocket::Rocket {
             routes![index, new, show, delete, author, update],
         )
         .mount("/", routes![static_files::all, static_files::index])
-        .catch(catchers![not_found])
+        //temperarily removed beacuse it doesn't work properly. 
+        //.catch(catchers![not_found])
 }
 
 fn main() {
