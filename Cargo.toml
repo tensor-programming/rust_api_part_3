@@ -5,7 +5,6 @@ authors = ["tensor-programming <abeltensor@tensor-programming.com>"]
 
 [dependencies]
 diesel = { version = "1.2.2", features = ["postgres"] }
-//diesel codegen removed since it is now a part of the main library. 
 dotenv = "0.11.0"
 r2d2 = "0.8.2"
 r2d2-diesel = "1.0.0"
@@ -17,5 +16,4 @@ rocket = "0.3.9"
 rocket_codegen = "0.3.9"
 rocket_contrib = {version = "0.3.9", default-features = false, features = ["json"]}
 
-//rocket imports changed to 0.3.9 (waiting on 0.4.0)
 
