@@ -67,10 +67,12 @@ fn author(author: String, conn: DbConn) -> Json<Value> {
     }))
 }
 
-#[catch(404)]
-fn not_found() -> Json<Value> {
-    Json(json!({
-        "status": "error",
-        "reason": "Resource was not found"
-    }))
-}
+
+//#[catch(404)]
+//fn not_found() -> Json<Value> {
+//    Json(json!({
+//        "status": "error",
+//        "reason": "Resource was not found"
+//    }))
+//}
+//needs to be reworked for current version of rocket.
