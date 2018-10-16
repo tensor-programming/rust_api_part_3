@@ -1,10 +1,10 @@
 use db::Conn as DbConn;
-use rocket_contrib::Json;
+use rocket_contrib::json::Json;
 use super::models::{Book, NewBook};
 use serde_json::Value;
 
 #[get("/books", format = "application/json")]
-fn index(conn: DbConn) -> Json<Value> {
+pub fn index(conn: DbConn) -> Json<Value> {
     let books = Book::all(&conn);
 
     Json(json!({
@@ -14,7 +14,7 @@ fn index(conn: DbConn) -> Json<Value> {
 }
 
 #[post("/books", format = "application/json", data = "<new_book>")]
-fn new(conn: DbConn, new_book: Json<NewBook>) -> Json<Value> {
+pub fn new(conn: DbConn, new_book: Json<NewBook>) -> Json<Value> {
     Json(json!({
         "status": Book::insert(new_book.into_inner(), &conn),
         "result": Book::all(&conn).first(),
@@ -22,7 +22,7 @@ fn new(conn: DbConn, new_book: Json<NewBook>) -> Json<Value> {
 }
 
 #[get("/books/<id>", format = "application/json")]
-fn show(conn: DbConn, id: i32) -> Json<Value> {
+pub fn show(conn: DbConn, id: i32) -> Json<Value> {
     let result = Book::show(id, &conn);
     let status = if result.is_empty() { 404 } else { 200 };
 
@@ -33,7 +33,7 @@ fn show(conn: DbConn, id: i32) -> Json<Value> {
 }
 
 #[put("/books/<id>", format = "application/json", data = "<book>")]
-fn update(conn: DbConn, id: i32, book: Json<NewBook>) -> Json<Value> {
+pub fn update(conn: DbConn, id: i32, book: Json<NewBook>) -> Json<Value> {
     let status = if Book::update_by_id(id, &conn, book.into_inner()) {
         200
     } else {
@@ -47,7 +47,7 @@ fn update(conn: DbConn, id: i32, book: Json<NewBook>) -> Json<Value> {
 }
 
 #[delete("/books/<id>")]
-fn delete(id: i32, conn: DbConn) -> Json<Value> {
+pub fn delete(id: i32, conn: DbConn) -> Json<Value> {
     let status = if Book::delete_by_id(id, &conn) {
         200
     } else {
@@ -60,7 +60,7 @@ fn delete(id: i32, conn: DbConn) -> Json<Value> {
 }
 
 #[get("/books/authors/<author>", format = "application/json")]
-fn author(author: String, conn: DbConn) -> Json<Value> {
+pub fn author(author: String, conn: DbConn) -> Json<Value> {
     Json(json!({
         "status": 200,
         "result": Book::all_by_author(author, &conn),

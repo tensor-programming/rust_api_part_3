@@ -1,12 +1,13 @@
-#![feature(plugin, custom_derive, const_fn, decl_macro, attr_literals, custom_attribute)]
-//new attributes added with attr_literals and custom_attribute
-#![plugin(rocket_codegen)]
+#![feature(plugin, custom_derive, const_fn, decl_macro, custom_attribute, proc_macro_hygiene)]
+#![allow(proc_macro_derive_resolution_fallback, unused_attributes)]
 
 #[macro_use]
 extern crate diesel;
+
 extern crate dotenv;
 extern crate r2d2;
 extern crate r2d2_diesel;
+#[macro_use]
 extern crate rocket;
 extern crate rocket_contrib;
 #[macro_use]
@@ -18,11 +19,11 @@ use dotenv::dotenv;
 use std::env;
 use routes::*;
 
-mod schema;
-mod models;
 mod db;
-mod static_files;
+mod models;
 mod routes;
+mod schema;
+mod static_files;
 
 fn rocket() -> rocket::Rocket {
     dotenv().ok();
@@ -37,10 +38,9 @@ fn rocket() -> rocket::Rocket {
             routes![index, new, show, delete, author, update],
         )
         .mount("/", routes![static_files::all, static_files::index])
-        //temperarily removed beacuse it doesn't work properly. 
-        //.catch(catchers![not_found])
 }
 
 fn main() {
     rocket().launch();
 }
+
